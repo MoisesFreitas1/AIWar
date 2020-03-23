@@ -44,6 +44,8 @@ public class SVMPlayerController : MonoBehaviour
 
     //Time scale
     private int timeScale;
+    public float lap;
+    public float currentlap;
 
     public float EPSILON = 0.1f;
     private float initialPosition;
@@ -60,7 +62,8 @@ public class SVMPlayerController : MonoBehaviour
         sensorLength = 10f;
         sensorAngle = 35f;
         frontSensorPosition = 0.1f;
-        layer = 1 << LayerMask.NameToLayer("Circuit"); ;
+        layer = 1 << LayerMask.NameToLayer("Circuit");
+        lap = 1;
 
         // Initializing car parameters
         rb = GetComponent<Rigidbody2D>();
@@ -189,6 +192,18 @@ public class SVMPlayerController : MonoBehaviour
                 previewCheckpoint = currentCheckpoint;
                 currentCheckpoint = other.gameObject.GetComponent<CheckPointsController>().GetCpID();
             }
+        }
+        if (other.gameObject.tag.Equals("Lap"))
+        {
+            currentlap = other.gameObject.GetComponent<CheckPointsController>().GetCpID();
+            if (currentlap > lap)
+            {
+                float timelap = referee.GetTimeLap();
+                referee.SetNLaps();
+                int nlap = referee.GetNLaps();
+                Debug.Log("SVM \nLap: " + nlap + "   Time: " + timelap);
+            }
+            lap = currentlap;
         }
     }
 

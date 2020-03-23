@@ -26,6 +26,8 @@ public class NeuralNetworkController : MonoBehaviour
     // Time Scale
     public int timeScale;
     private int timeScaleAnt;
+    private int nLaps;
+    private float timeLap;
 
     // Start is called before the first frame update
     void Start()
@@ -33,12 +35,14 @@ public class NeuralNetworkController : MonoBehaviour
         timeScale = 1;
         timeScaleAnt = timeScale;
         timesRessurect = 0;
+        nLaps = -1;
+        timeLap = 0;
 
         // Initializing POD times
         // Generating POD parameters
         CarInstantiate();
 
-        alpha = 0.03f;
+        alpha = 0.001f; // muito bom
 
         dataSizeSt = 1;
         dataSizeTh = 1;
@@ -120,6 +124,7 @@ public class NeuralNetworkController : MonoBehaviour
 
     void Update()
     {
+        timeLap = timeLap + Time.deltaTime;
         GameObject[] PODs = GameObject.FindGameObjectsWithTag("NNPlayer");
 
         if (PODs.Length == 0)
@@ -184,6 +189,22 @@ public class NeuralNetworkController : MonoBehaviour
     public double[] GetDecisionSteerTheta()
     {
         return thetaSteer;
+    }
+
+    // Counter Laps and Time
+    public float GetTimeLap()
+    {
+        return timeLap;
+    }
+
+    public void SetNLaps()
+    {
+        nLaps = nLaps + 1;
+    }
+
+    public int GetNLaps()
+    {
+        return nLaps;
     }
 
     // Creates 'n_pods' car instances
@@ -311,7 +332,7 @@ public class NeuralNetworkController : MonoBehaviour
         dataSizeSt = dataSizeSt + sizeSt;
     }
 
-    // Decision Tree
+    // Neural Network
     public double[] DecisionThrust(double[][] inputs, int[] outputs)
     {
         for (int i = 0; i < inputs.Length; i++)
@@ -354,7 +375,7 @@ public class NeuralNetworkController : MonoBehaviour
             thetaThrust[5] = thetaThrust[5] + alpha * deltaks[0];
             thetaThrust[6] = thetaThrust[6] + alpha * deltaks[1];
 
-            double[] Er = new double[3];
+            double[] Er = new double[2];
             Er[0] = (Mathf.Pow((float)deltaks[0], 2)) / 2f;
             Er[1] = (Mathf.Pow((float)deltaks[1], 2)) / 2f;
             double er = Er[0] + Er[1];
@@ -464,10 +485,9 @@ public class NeuralNetworkController : MonoBehaviour
                 weightsSteer[14] = weightsSteer[14] + alpha * delta1[2] * outIntern11;
                 weightsSteer[15] = weightsSteer[15] + alpha * delta1[2] * outIntern12;
 
-                thetaSteer[2] = thetaSteer[2] + 0.0001f * delta1[0];
-                thetaSteer[3] = thetaSteer[3] + 0.0001f * delta1[1];
-                thetaSteer[4] = thetaSteer[4] + 0.0001f * delta1[2];
-
+                thetaSteer[2] = thetaSteer[2] + alpha * delta1[0];
+                thetaSteer[3] = thetaSteer[3] + alpha * delta1[1];
+                thetaSteer[4] = thetaSteer[4] + alpha * delta1[2];
 
                 double[] delta0 = new double[2];
                 delta0[0] = DotFunctionTransfer(net1) * (delta1[0] * weightsSteer[8] + delta1[1] * weightsSteer[10] + delta1[2] * weightsSteer[12]);

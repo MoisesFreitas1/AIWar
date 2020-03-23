@@ -18,6 +18,7 @@ TagManager:
   - LRController
   - NNController
   - NNPlayer
+  - Lap
   layers:
   - Default
   - TransparentFX
@@ -30,7 +31,7 @@ TagManager:
   - Checkpoints
   - Players
   - Circuit
-  - 
+  - Lap
   - 
   - 
   - 

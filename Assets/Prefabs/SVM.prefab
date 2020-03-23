@@ -136,6 +136,8 @@ MonoBehaviour:
   dataSizeSt: 0
   answerThrust: 
   answerSteer: 
+  lap: 0
+  currentlap: 0
   EPSILON: 0.1
   countTimeStop: 0
 --- !u!96 &6566025329140207737
@@ -146,7 +148,7 @@ TrailRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1560780970100443608}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1

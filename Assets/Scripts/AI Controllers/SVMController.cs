@@ -23,6 +23,8 @@ public class SVMController : MonoBehaviour
     // Time Scale
     public int timeScale;
     private int timeScaleAnt;
+    private int nLaps;
+    private float timeLap;
 
     // Start is called before the first frame update
     void Start()
@@ -30,6 +32,8 @@ public class SVMController : MonoBehaviour
         timeScale = 1;
         timeScaleAnt = timeScale;
         timesRessurect = 0;
+        nLaps = -1;
+        timeLap = 0;
         // Generating POD parameters
         CarInstantiate();
 
@@ -90,6 +94,7 @@ public class SVMController : MonoBehaviour
         }
         decisionThrust = teacherT.Learn(inputsT0, outputs0);
         decisionSteer = teacherS.Learn(inputsS0, outputs1);
+
     }
 
     public int GetTimesRessurect()
@@ -99,6 +104,7 @@ public class SVMController : MonoBehaviour
 
     void Update()
     {
+        timeLap = timeLap + Time.deltaTime;
         GameObject[] PODs = GameObject.FindGameObjectsWithTag("SVMPlayer");
 
         if (PODs.Length == 0)
@@ -153,6 +159,22 @@ public class SVMController : MonoBehaviour
     public SupportVectorMachine<Gaussian> GetDecisionSteer()
     {
         return decisionSteer;
+    }
+
+    // Counter Laps and Time
+    public float GetTimeLap()
+    {
+        return timeLap;
+    }
+
+    public void SetNLaps()
+    {
+        nLaps = nLaps + 1;
+    }
+
+    public int GetNLaps()
+    {
+        return nLaps;
     }
 
     // Creates 'n_pods' car instances

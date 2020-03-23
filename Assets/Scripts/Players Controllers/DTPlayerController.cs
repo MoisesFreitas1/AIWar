@@ -43,6 +43,8 @@ public class DTPlayerController : MonoBehaviour
 
     //Time scale
     private int timeScale;
+    public float lap;
+    public float currentlap;
 
     public float EPSILON = 0.1f;
     private float initialPosition;
@@ -54,12 +56,13 @@ public class DTPlayerController : MonoBehaviour
     void Start()
     {
         countTimeStop = 0;
-
         // Initializing sensor parameters
         sensorLength = 10f;
         sensorAngle = 35f;
         frontSensorPosition = 0.1f;
         layer = 1 << LayerMask.NameToLayer("Circuit"); ;
+
+        lap = 1;
 
         // Initializing car parameters
         rb = GetComponent<Rigidbody2D>();
@@ -183,11 +186,24 @@ public class DTPlayerController : MonoBehaviour
         }
         if (other.gameObject.tag.Equals("Checkpoint"))
         {
-            if(System.Math.Abs(other.gameObject.GetComponent<CheckPointsController>().GetCpID() - currentCheckpoint) > EPSILON)
+            if (System.Math.Abs(other.gameObject.GetComponent<CheckPointsController>().GetCpID() - currentCheckpoint) > EPSILON)
             {
                 previewCheckpoint = currentCheckpoint;
                 currentCheckpoint = other.gameObject.GetComponent<CheckPointsController>().GetCpID();
             }
+        }
+        if (other.gameObject.tag.Equals("Lap"))
+        {
+            currentlap = other.gameObject.GetComponent<CheckPointsController>().GetCpID();
+            if(currentlap > lap)
+            {
+                float timelap = referee.GetTimeLap();
+                referee.SetNLaps();
+                int nlap = referee.GetNLaps();
+                Debug.Log("Decision Tree \nLap: " + nlap + "   Time: " + timelap);
+            }
+            lap = currentlap;
+
         }
     }
 

@@ -22,6 +22,8 @@ public class LogisticRegressionController : MonoBehaviour
     // Time Scale
     public int timeScale;
     private int timeScaleAnt;
+    private int nLaps;
+    private float timeLap;
 
     // Start is called before the first frame update
     void Start()
@@ -29,6 +31,8 @@ public class LogisticRegressionController : MonoBehaviour
         timeScale = 1;
         timeScaleAnt = timeScale;
         timesRessurect = 0;
+        nLaps = -1;
+        timeLap = 0;
 
         // Generating POD parameters
         CarInstantiate();
@@ -99,6 +103,7 @@ public class LogisticRegressionController : MonoBehaviour
 
     void Update()
     {
+        timeLap = timeLap + Time.deltaTime;
         GameObject[] PODs = GameObject.FindGameObjectsWithTag("LRPlayer");
 
         if (PODs.Length == 0)
@@ -155,6 +160,22 @@ public class LogisticRegressionController : MonoBehaviour
         return decisionSteer;
     }
 
+    // Counter Laps and Time
+    public float GetTimeLap()
+    {
+        return timeLap;
+    }
+
+    public void SetNLaps()
+    {
+        nLaps = nLaps + 1;
+    }
+
+    public int GetNLaps()
+    {
+        return nLaps;
+    }
+
     // Creates 'n_pods' car instances
     void CarInstantiate()
     {
@@ -173,7 +194,7 @@ public class LogisticRegressionController : MonoBehaviour
         POD_matrix = new float[n_pods][];
         for (int i = 0; i < n_pods; i++)
         {
-            POD_matrix[i] = new float[7] { 11f, 2f, 10f, 3f, 1f, Random.value, 0f };
+            POD_matrix[i] = new float[7] { 10f, 2f, 10f, 3f, 1f, Random.value, 0f };
         }
     }
 

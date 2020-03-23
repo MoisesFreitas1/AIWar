@@ -136,6 +136,8 @@ MonoBehaviour:
   dataSizeSt: 0
   answerThrust: 
   answerSteer: 
+  lap: 0
+  currentlap: 0
   EPSILON: 0.1
 --- !u!70 &5613810684845734209
 CapsuleCollider2D:
@@ -161,7 +163,7 @@ TrailRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 682738113860968715}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1

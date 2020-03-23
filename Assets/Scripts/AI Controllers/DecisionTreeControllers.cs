@@ -22,14 +22,16 @@ public class DecisionTreeControllers : MonoBehaviour
     // Time Scale
     public int timeScale;
     private int timeScaleAnt;
-
+    private int nLaps;
+    private float timeLap;
     // Start is called before the first frame update
     void Start()
     {
         timeScale = 1;
         timeScaleAnt = timeScale;
         timesRessurect = 0;
-
+        nLaps = -1;
+        timeLap = 0;
         // Initializing POD times
         // Generating POD parameters
         CarInstantiate();
@@ -105,6 +107,7 @@ public class DecisionTreeControllers : MonoBehaviour
 
     void Update()
     {
+        timeLap = timeLap + Time.deltaTime;
         GameObject[] PODs = GameObject.FindGameObjectsWithTag("DTPlayer");
 
         if (PODs.Length == 0)
@@ -159,6 +162,22 @@ public class DecisionTreeControllers : MonoBehaviour
     public DecisionTree GetDecisionSteer()
     {
         return decisionSteer;
+    }
+
+    // Counter Laps and Time
+    public float GetTimeLap()
+    {
+        return timeLap;
+    }
+
+    public void SetNLaps()
+    {
+        nLaps = nLaps + 1;
+    }
+
+    public int GetNLaps()
+    {
+        return nLaps;
     }
 
     // Creates 'n_pods' car instances
